@@ -1,0 +1,46 @@
+<SQLFeatureStore xmlns="http://www.deegree.org/datasource/feature/sql" xmlns:gn="urn:x-inspire:specification:gmlas:GeographicalNames:3.0" xmlns:base="urn:x-inspire:specification:gmlas:BaseTypes:3.2" xmlns:gmd="http://www.isotc211.org/2005/gmd" xmlns:au="urn:x-inspire:specification:gmlas:AdministrativeUnits:3.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" configVersion="3.2.0" xsi:schemaLocation="http://www.deegree.org/datasource/feature/sql http://schemas.deegree.org/datasource/feature/sql/3.2.0/sql.xsd">
+
+  <!-- [1] Identifier of JDBC connection -->
+  <JDBCConnId>postgislocal</JDBCConnId>
+  <StorageCRS srid="-1" dim="2D">EPSG:3044</StorageCRS>
+  <GMLSchema>../../appschemas/inspire/annex1/AdministrativeUnits.xsd</GMLSchema>
+
+  <!-- [0...n] Definitions of feature types (derived from tables) -->
+
+  <!-- Config option 5: Configuration based on table specifying explicit feature type name with namespace, explicit property 
+       mapping and specifying CRS. In case no autoincrement PK column could be found for gml:id FID Mapping is required. -->
+  <FeatureTypeMapping table="vg250_gem" name="au:AdministrativeUnit">
+    <FIDMapping prefix="au_">
+      <Column name="rs" type="string"/>
+      <UUIDGenerator/>
+    </FIDMapping>
+    <Geometry path="au:geometry" mapping="geom">
+      <StorageCRS srid="-1">EPSG:3044</StorageCRS>
+    </Geometry>
+    <Primitive path="au:nationalCode" mapping="rs"/>
+    <Complex path="au:inspireId">
+      <Complex path="base:Identifier">
+        <Primitive path="base:localId" mapping="rs"/>
+        <Primitive path="base:namespace" mapping="'DE.BKG'"/>
+      </Complex>
+    </Complex>
+    <Primitive path="au:nationalLevel" mapping="'6th Order'"/>
+    <Complex path="au:country">
+      <Complex path="gmd:Country">
+        <Primitive path="text()" mapping="'DE'"/>
+        <Primitive path="@codeList" mapping="'http://schemas.kademo.nl/inspire/codelist-1004/CountryCode.xml'"/>
+        <Primitive path="@codeListValue" mapping="'DE'"/>
+      </Complex>
+    </Complex>
+    <Complex path="au:name">
+      <Complex path="gn:GeographicalName">
+        <Complex path="gn:spelling">
+          <Complex path="gn:SpellingOfName">
+            <Primitive path="gn:text" mapping="gen"/>
+            <Primitive path="gn:script" mapping="'Latin'"/>
+          </Complex>
+        </Complex>
+      </Complex>
+    </Complex>
+  </FeatureTypeMapping>
+</SQLFeatureStore>
